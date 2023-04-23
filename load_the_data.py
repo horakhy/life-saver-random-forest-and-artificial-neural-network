@@ -3,7 +3,7 @@ import csv
 import pandas as pd
 
 given_data = []
-expected_data = []
+evaluation_data = []
 classification_classes = {
     1: "Crítico",
     2: "Instável",
@@ -25,8 +25,8 @@ with open('treino_sinais_vitais_sem_label.txt', newline='') as csvfile:
         row = [cell.strip() for cell in row]
         given_data.append(row)
 
-given_data= pd.read_csv('treino_sinais_vitais_sem_label.txt', names=column_names_without_label, header=None)
+evaluation_data= pd.read_csv('treino_sinais_vitais_sem_label.txt', names=column_names_without_label, header=None)
 
-expected_data= pd.read_csv('treino_sinais_vitais_com_label.txt', names=column_names_with_label, header=None)
+given_data= pd.read_csv('treino_sinais_vitais_com_label.txt', names=column_names_with_label, header=None)
 
-expected_labels = expected_data["label"]
+targeted_labels = given_data["label"]
