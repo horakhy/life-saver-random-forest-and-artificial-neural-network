@@ -20,7 +20,7 @@ def decision_tree_classifier():
     )
 
     ## Criar o modelo do classificador de árvore de decisão
-    dtree_model = DecisionTreeClassifier(criterion="gini", max_depth=8)
+    dtree_model = DecisionTreeClassifier(criterion="gini", max_depth=2)
     dtree_model.fit(X_train, y_train)
 
     ## Predições
@@ -62,5 +62,5 @@ def decision_tree_regressor():
     print(dtree_predictions[:10])
 
 
-# decision_tree_classifier()
-decision_tree_regressor()
+decision_tree_classifier()
+# decision_tree_regressor()
