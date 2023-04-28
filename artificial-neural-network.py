@@ -10,7 +10,7 @@ from math import sqrt
 from sklearn.metrics import r2_score
 from load_the_data import given_data, evaluation_data, targeted_labels
 
-target_column = ['gravity'] 
+target_column = ['label'] 
 predictors = list(set(list(given_data.columns))-set(target_column))
 given_data[predictors] = given_data[predictors]/given_data[predictors].max()
 given_data.describe().transpose()
