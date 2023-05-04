@@ -1,4 +1,4 @@
-from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor, plot_tree
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor, plot_tree,export_graphviz
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, r2_score, mean_squared_log_error
 import numpy as np
@@ -33,7 +33,11 @@ def decision_tree_classifier():
 
     print("Accuracy:", accuracy_score(y_test, dtree_predictions))
     print("validate:", validate.all())
-
+    dot_data = export_graphviz(dtree_model, 
+      out_file='Tree.dot', 
+      feature_names = X_train.columns,
+      rounded = True, proportion = False, 
+      precision = 2, filled = True)
 
 def decision_tree_regressor():
     X_attributes = given_data_regressor.drop(["gravity"], axis=1)
