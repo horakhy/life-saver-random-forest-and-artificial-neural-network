@@ -39,18 +39,20 @@ print(confusion_matrix(y_test,predict_test))
 print(classification_report(y_test,predict_test))
 def regressor():
     X_attributes = given_data_regressor.drop(["gravity"], axis=1)
-    
-    
+
     X_train, X_test, y_train, y_test = train_test_split(
-        X_attributes, targeted_gravity, test_size=0.2, random_state=1
+        X_attributes, targeted_gravity, test_size=0.2, random_state=0
     )
+    sc=StandardScaler()# normaliza para retiar o bias do modelo para valores altos.
+    scaler = sc.fit(X_train)
+    X_train_scaled = scaler.transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
     
-    mlp = MLPRegressor(hidden_layer_sizes=(8,8,8), activation='relu', solver='adam', max_iter=1000)
-    mlp.fit(X_train,y_train)
+    mlp = MLPRegressor(hidden_layer_sizes=(100,50,20), activation='relu', solver='adam', max_iter=2000,early_stopping=True)
+    mlp.fit(X_train_scaled,y_train)
 
     predict_train = mlp.predict(X_train)
-    predict_test = mlp.predict(X_test)
-
+    predict_test = mlp.predict(X_test_scaled)
     validate = np.isin(predict_train, targeted_gravity)
     
     df_temp = pd.DataFrame({'Actual': y_test, 'Predicted': predict_test})
@@ -60,6 +62,7 @@ def regressor():
     plt.grid(which='major', linestyle='-', linewidth='0.5', color='green')
     plt.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
     plt.show()
+    
     #print(r2_score(y_test, predict_train))
     #print(mean_squared_log_error(y_test, predict_train))
 
