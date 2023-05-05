@@ -10,7 +10,6 @@ from load_the_data import (
 )
 import matplotlib.pyplot as plt
 
-
 def decision_tree_classifier():
     X_attributes = given_data_classifier.drop(["label"], axis=1)
 
@@ -33,7 +32,8 @@ def decision_tree_classifier():
 
     print("Accuracy:", accuracy_score(y_test, dtree_predictions))
     print("validate:", validate.all())
-    dot_data = export_graphviz(dtree_model, 
+    
+    export_graphviz(dtree_model, 
       out_file='Tree.dot', 
       feature_names = X_train.columns,
       rounded = True, proportion = False, 
