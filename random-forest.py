@@ -1,8 +1,9 @@
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 import numpy as np
+import pickle
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from load_the_data import given_data_classifier, given_data_regressor, targeted_gravity, targeted_labels
-import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, r2_score, mean_squared_log_error
 
 def random_forest_classifier():
@@ -19,6 +20,8 @@ def random_forest_classifier():
 
     ## Predições
     dtree_predictions = dtree_model.predict(X_test)
+    filename = "classifier-RandF.pickle"
+    pickle.dump(dtree_model, open(filename, "wb"))
 
     validate = np.isin(dtree_predictions, targeted_labels)
 
@@ -27,8 +30,7 @@ def random_forest_classifier():
 
     print(validate)
 
-    # print(y_test[:10])
-    # print(dtree_predictions[:10])
+    
 
 
 def random_forest_regressor():
@@ -45,13 +47,17 @@ def random_forest_regressor():
 
     ## Predições
     dtree_predictions = dtree_model.predict(X_test)
-
+    
+    filename = "regressor-RandF.pickle"
+    pickle.dump(dtree_model, open(filename, "wb"))
+   
     validate = np.isin(dtree_predictions, targeted_gravity)
 
     print(r2_score(y_test, dtree_predictions))
     print(mean_squared_log_error(y_test, dtree_predictions))
 
-    print(validate)
+    #print(validate)
     # print(dtree_predictions[:10])
 
-random_forest_classifier()
+#random_forest_classifier()
+random_forest_regressor()
