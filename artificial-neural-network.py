@@ -1,10 +1,11 @@
 import numpy as np 
 import matplotlib.pyplot as plt
-import pandas as pd
+import pandas as pd 
+import pickle
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier,MLPRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, r2_score, mean_squared_log_error
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, r2_score, mean_squared_log_error,ConfusionMatrixDisplay
 from load_the_data import given_data_classifier, given_data_regressor, targeted_labels, targeted_gravity
 
 def plot_data(y_test, predict_test):
@@ -15,6 +16,13 @@ def plot_data(y_test, predict_test):
 	plt.grid(which='major', linestyle='-', linewidth='0.5', color='green')
 	plt.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
 	plt.savefig("NN-plot.png")
+
+def confusion_matrix(model, x_test, y_test,png_name):
+    fig=ConfusionMatrixDisplay.from_estimator(model, x_test, y_test,display_labels=["1","2","3","4"])
+    fig.figure_.suptitle("Confusion Matrix")
+    plt.savefig(f'confusion_matrix_{png_name}.png')
+    plt.show()
+    plt.close()
 
 def neural_network_classifier():
 	target_column = ['label'] 
@@ -29,14 +37,16 @@ def neural_network_classifier():
 	print(X_train.shape)
 	print(X_test.shape)
 
-	mlp = MLPClassifier(hidden_layer_sizes=(8,8,8), activation='relu', solver='adam', max_iter=100)
+	mlp = MLPClassifier(hidden_layer_sizes=(100,50,20), activation='relu', solver='adam', max_iter=1000)
 	mlp.fit(X_train,y_train)
 
-	predict_train = mlp.predict(X_train)
+	filename = "classifier-NN.pickle"
+	pickle.dump(mlp, open(filename, "wb"))
+
 	predict_test = mlp.predict(X_test)
 
 	plot_data(y_test, predict_test)
-
+	confusion_matrix(mlp, X_test, y_test,"classifier")
 	print(confusion_matrix(y_test, predict_test))
 	print(classification_report(y_test, predict_test))
 	print(confusion_matrix(y_test,predict_test))
@@ -44,31 +54,32 @@ def neural_network_classifier():
 
 
 def neural_network_regressor():
-		X_attributes = given_data_regressor.drop(["gravity"], axis=1)
+	X_attributes = given_data_regressor.drop(["gravity"], axis=1)
 
-		X_train, X_test, y_train, y_test = train_test_split(
-				X_attributes, targeted_gravity, test_size=0.2, random_state=0
-		)
-		sc= StandardScaler() # normaliza para retiar o bias do modelo para valores altos.
-		scaler = sc.fit(X_train)
-		X_train_scaled = scaler.transform(X_train)
-		X_test_scaled = scaler.transform(X_test)
+	X_train, X_test, y_train, y_test = train_test_split(
+		X_attributes, targeted_gravity, test_size=0.2, random_state=0
+	)
+	sc= StandardScaler() # normaliza para retiar o bias do modelo para valores altos.
+	scaler = sc.fit(X_train)
+	X_train_scaled = scaler.transform(X_train)
+	X_test_scaled = scaler.transform(X_test)
 
-		mlp = MLPRegressor(hidden_layer_sizes=(120, 50, 20), activation='relu', solver='adam', max_iter=2000, early_stopping=True)
-		mlp.fit(X_train_scaled,y_train)
+	mlp = MLPRegressor(hidden_layer_sizes=(120, 50, 20), activation='relu', solver='adam', max_iter=2000, early_stopping=True)
 
-		predict_train = mlp.predict(X_train)
-		predict_test = mlp.predict(X_test_scaled)
+	mlp.fit(X_train_scaled,y_train)
 
-		# plot_data(y_test, predict_test)
+		
+	predict_test = mlp.predict(X_test_scaled)
 
-		print(r2_score(y_test, predict_test))
-		print(mean_squared_log_error(y_test, predict_test))
+	filename = "regressor-NN.pickle"
+	pickle.dump(mlp, open(filename, "wb"))
+	
+	# load model
+	#loaded_model = pickle.load(open(filename, "rb"))
 
-		# plt.plot(mlp.loss_curve_)
-		# plt.title("Loss Curve", fontsize=14)
-		# plt.xlabel('Iterations')
-		# plt.ylabel('Cost')
-		# plt.savefig("Loss Curve.png")
+	print(r2_score(y_test, predict_test))
+	print(mean_squared_log_error(y_test, predict_test))
+		
 		
 neural_network_regressor()
+#neural_network_classifier()
