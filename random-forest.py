@@ -4,18 +4,18 @@ import pickle
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from load_the_data import given_data_classifier, given_data_regressor, targeted_gravity, targeted_labels
-from sklearn.metrics import accuracy_score, r2_score, mean_squared_log_error
+from sklearn.metrics import classification_report, r2_score, mean_squared_error
 
 def random_forest_classifier():
     X_attributes = given_data_classifier.drop(["label"], axis=1)
 
     ## Separar dataSet para treinamento e teste
     X_train, X_test, y_train, y_test = train_test_split(
-        X_attributes, targeted_labels, test_size=0.3, random_state=1
+        X_attributes, targeted_labels, test_size=0.4, random_state=1
     )
 
     ## Criar o modelo do classificador de árvore de decisão
-    dtree_model = RandomForestClassifier(n_estimators=100, criterion="gini", max_depth=2)
+    dtree_model = RandomForestClassifier(n_estimators=100, criterion="gini", max_depth=3)
     dtree_model.fit(X_train, y_train)
 
     ## Predições
@@ -23,16 +23,8 @@ def random_forest_classifier():
     filename = "classifier-RandF.pickle"
     pickle.dump(dtree_model, open(filename, "wb"))
 
-    validate = np.isin(dtree_predictions, targeted_labels)
-
-    print("Accuracy:", accuracy_score(y_test, dtree_predictions))
-    print("validate:", validate.all())
-
-    print(validate)
-
+    print(classification_report(y_test, dtree_predictions))
     
-
-
 def random_forest_regressor():
     X_attributes = given_data_regressor.drop(["gravity"], axis=1)
 
@@ -42,7 +34,7 @@ def random_forest_regressor():
     )
 
     ## Criar o modelo do classificador de árvore de decisão
-    dtree_model = RandomForestRegressor(n_estimators=25, criterion="poisson")
+    dtree_model = RandomForestRegressor(n_estimators=25, max_depth=12, criterion="poisson")
     dtree_model.fit(X_train, y_train)
 
     ## Predições
@@ -50,14 +42,11 @@ def random_forest_regressor():
     
     filename = "regressor-RandF.pickle"
     pickle.dump(dtree_model, open(filename, "wb"))
-   
-    validate = np.isin(dtree_predictions, targeted_gravity)
 
     print(r2_score(y_test, dtree_predictions))
-    print(mean_squared_log_error(y_test, dtree_predictions))
+    print(mean_squared_error(y_test, dtree_predictions))
 
-    #print(validate)
-    # print(dtree_predictions[:10])
+   
 
-#random_forest_classifier()
-random_forest_regressor()
+random_forest_classifier()
+# random_forest_regressor()

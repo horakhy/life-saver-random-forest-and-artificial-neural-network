@@ -1,6 +1,6 @@
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor, plot_tree,export_graphviz
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, r2_score, mean_squared_log_error
+from sklearn.metrics import accuracy_score, r2_score, mean_squared_error, classification_report
 import numpy as np
 import pickle
 from load_the_data import (
@@ -16,24 +16,22 @@ def decision_tree_classifier():
 
     ## Separar dataSet para treinamento e teste
     X_train, X_test, y_train, y_test = train_test_split(
-        X_attributes, targeted_labels, test_size=0.2, random_state=1
+        X_attributes, targeted_labels, test_size=0.4, random_state=1
     )
     
-    dtree_model = DecisionTreeClassifier(criterion="gini", max_depth=2)
+    dtree_model = DecisionTreeClassifier(criterion="gini", max_depth=3)
     dtree_model.fit(X_train, y_train)
 
     ## Predições
     dtree_predictions = dtree_model.predict(X_test)
     filename = "regressor-Tree.pickle"
     pickle.dump(dtree_model, open(filename, "wb"))
-    validate = np.isin(dtree_predictions, targeted_labels)
 
     plot_tree(dtree_model)
-    plt.savefig("dtree.png")
+    plt.savefig("dtree-classifier.png")
 
-    print("Accuracy:", accuracy_score(y_test, dtree_predictions))
-    print("validate:", validate.all())
-    
+    print(classification_report(y_test, dtree_predictions))
+
     export_graphviz(dtree_model, 
       out_file='Tree.dot', 
       feature_names = X_train.columns,
@@ -45,11 +43,11 @@ def decision_tree_regressor():
 
     ## Separar dataSet para treinamento e teste
     X_train, X_test, y_train, y_test = train_test_split(
-        X_attributes, targeted_gravity, test_size=0.2, random_state=1
+        X_attributes, targeted_gravity, test_size=0.4, random_state=1
     )
     
     ## Criar o modelo do classificador de árvore de decisão
-    dtree_model = DecisionTreeRegressor(criterion="poisson", max_depth=8)
+    dtree_model = DecisionTreeRegressor(criterion="poisson", max_depth=16)
     dtree_model.fit(X_train, y_train)
 
     ## Predições
@@ -57,17 +55,12 @@ def decision_tree_regressor():
     filename = "regressor-Tree.pickle"
     pickle.dump(dtree_model, open(filename, "wb"))
 
-    validate = np.isin(dtree_predictions, targeted_gravity)
-
     # plot_tree(dtree_model)
-    # plt.savefig("dtree.png")
+    # plt.savefig("dtree-regressor.png")
 
     print(r2_score(y_test, dtree_predictions))
-    print(mean_squared_log_error(y_test, dtree_predictions))
-
-    # print(y_test[:10])
-    # print(dtree_predictions[:10])
+    print(mean_squared_error(y_test, dtree_predictions))
 
 
 decision_tree_classifier()
-#decision_tree_regressor()
+# decision_tree_regressor()

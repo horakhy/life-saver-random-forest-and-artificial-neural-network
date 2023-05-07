@@ -4,3 +4,5 @@ teste_forest.py
 teste_main.py
 .vscode
 dtree.png
+*.pickle
+*.dot
