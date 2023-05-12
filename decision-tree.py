@@ -6,8 +6,10 @@ import pickle
 from load_the_data import (
     given_data_classifier,
     given_data_regressor,
+    plot_importance,
     targeted_labels,
     targeted_gravity,
+    plot_confusion_matrix
 )
 import matplotlib.pyplot as plt
 
@@ -31,6 +33,8 @@ def decision_tree_classifier():
     plt.savefig("dtree-classifier.png")
 
     print(classification_report(y_test, dtree_predictions))
+    plot_importance(dtree_model, "tree-classifier.png")
+    plot_confusion_matrix(dtree_model, X_test, y_test, "decision-tree-classifier")
 
     export_graphviz(dtree_model, 
       out_file='Tree.dot', 
@@ -62,5 +66,5 @@ def decision_tree_regressor():
     print(mean_squared_error(y_test, dtree_predictions))
 
 
-# decision_tree_classifier()
-decision_tree_regressor()
+decision_tree_classifier()
+# decision_tree_regressor()

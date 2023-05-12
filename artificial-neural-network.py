@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier,MLPRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, r2_score, mean_squared_error,ConfusionMatrixDisplay
-from load_the_data import given_data_classifier, given_data_regressor, targeted_labels, targeted_gravity
+from load_the_data import given_data_classifier, given_data_regressor, targeted_labels, targeted_gravity, plot_confusion_matrix
 
 def plot_data(y_test, predict_test):
 	df_temp = pd.DataFrame({'Actual': y_test, 'Predicted': predict_test})
@@ -17,12 +17,6 @@ def plot_data(y_test, predict_test):
 	plt.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
 	plt.savefig("NN-plot.png")
 
-def plot_confusion_matrix(model, x_test, y_test, png_name):
-    fig=ConfusionMatrixDisplay.from_estimator(model, x_test, y_test, display_labels=["1","2","3","4"])
-    fig.figure_.suptitle("Confusion Matrix")
-    plt.savefig(f'confusion_matrix_{png_name}.png')
-    plt.show()
-    plt.close()
 
 def neural_network_classifier():
 	target_column = ['label'] 
@@ -49,6 +43,7 @@ def neural_network_classifier():
 	plot_confusion_matrix(mlp, X_test, y_test, "classifier")
 	print(confusion_matrix(y_test, predict_test))
 	print(classification_report(y_test, predict_test))
+	plot_confusion_matrix(mlp, X_test, y_test, "classifier")
 
 def neural_network_regressor():
 	X_attributes = given_data_regressor.drop(["gravity"], axis=1)
