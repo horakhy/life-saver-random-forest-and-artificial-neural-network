@@ -1,5 +1,7 @@
 # life-saver-random-forest-and-artificial-neural-network
 
+-- Verificar branch version/2.0 para o código dos classificadores atualizado sem a utilização da gravidade como parâmetro que refere-se aos resultados abaixo
+
 ## Resultados do classificador versão 2.0 (sem utilizar a gravidade como parâmetro, presente na branch version/2.0)
 
 | Métricas   | DecisionTree | RandomForest  | MLPClassifier |
