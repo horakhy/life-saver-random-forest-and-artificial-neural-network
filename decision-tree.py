@@ -43,7 +43,7 @@ def decision_tree_regressor():
 
     ## Separar dataSet para treinamento e teste
     X_train, X_test, y_train, y_test = train_test_split(
-        X_attributes, targeted_gravity, test_size=0.4, random_state=1
+        X_attributes, targeted_gravity, test_size=0.3, random_state=1
     )
     
     ## Criar o modelo do classificador de árvore de decisão
@@ -62,5 +62,5 @@ def decision_tree_regressor():
     print(mean_squared_error(y_test, dtree_predictions))
 
 
-decision_tree_classifier()
-# decision_tree_regressor()
+# decision_tree_classifier()
+decision_tree_regressor()

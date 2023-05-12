@@ -30,7 +30,7 @@ def random_forest_regressor():
 
     ## Separar dataSet para treinamento e teste
     X_train, X_test, y_train, y_test = train_test_split(
-        X_attributes, targeted_gravity, test_size=0.2, random_state=1
+        X_attributes, targeted_gravity, test_size=0.3, random_state=1
     )
 
     ## Criar o modelo do classificador de árvore de decisão
@@ -48,5 +48,5 @@ def random_forest_regressor():
 
    
 
-random_forest_classifier()
-# random_forest_regressor()
+# random_forest_classifier()
+random_forest_regressor()

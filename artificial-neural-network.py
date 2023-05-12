@@ -77,5 +77,5 @@ def neural_network_regressor():
 	print(mean_squared_error(y_test, predict_test))
 		
 		
-# neural_network_regressor()
-neural_network_classifier()
+neural_network_regressor()
+# neural_network_classifier()
