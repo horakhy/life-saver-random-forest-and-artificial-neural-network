@@ -3,7 +3,7 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from load_the_data import given_data_classifier, given_data_regressor, targeted_gravity, targeted_labels
+from load_the_data import given_data_classifier, given_data_regressor, targeted_gravity, targeted_labels, plot_confusion_matrix
 from sklearn.metrics import classification_report, r2_score, mean_squared_error
 
 def random_forest_classifier():
@@ -24,6 +24,7 @@ def random_forest_classifier():
     pickle.dump(dtree_model, open(filename, "wb"))
 
     print(classification_report(y_test, dtree_predictions))
+    plot_confusion_matrix(dtree_model, X_test, y_test, "random-forest-classifier")
     
 def random_forest_regressor():
     X_attributes = given_data_regressor.drop(["gravity"], axis=1)
@@ -48,5 +49,5 @@ def random_forest_regressor():
 
    
 
-# random_forest_classifier()
-random_forest_regressor()
+random_forest_classifier()
+# random_forest_regressor()
