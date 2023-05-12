@@ -11,14 +11,9 @@ from load_the_data import (
     targeted_gravity,
     plot_confusion_matrix
 )
-import matplotlib.pyplot as plt
-import random
 
-best_max_depth = 0
-best_random_state = 0
-best_accuracy_score = 0
 
-def decision_tree_classifier(max_depth):
+def decision_tree_classifier():
     X_attributes = given_data_classifier.drop(["label"], axis=1)
 
     ## Separar dataSet para treinamento e teste
@@ -40,11 +35,6 @@ def decision_tree_classifier(max_depth):
     print(classification_report(y_test, dtree_predictions))
     # plot_importance(dtree_model, "tree-classifier.png")
     # plot_confusion_matrix(dtree_model, X_test, y_test, "decision-tree-classifier")
-    
-    global best_accuracy_score, best_max_depth, best_random_state
-    if(accuracy_score(y_test, dtree_predictions) > best_accuracy_score):    
-        best_accuracy_score = accuracy_score(y_test, dtree_predictions)
-        best_max_depth = max_depth
 
     # export_graphviz(dtree_model, 
     #   out_file='Tree.dot', 
@@ -76,13 +66,5 @@ def decision_tree_regressor():
     print(mean_squared_error(y_test, dtree_predictions))
 
 
-for i in range(1):
-    decision_tree_classifier(random.randint(1, 25))
-    print("Iteração: ", i)
-
 # decision_tree_regressor()
-
-
-# print("Best max_depth: ", best_max_depth)
-# print("Best random_state: ", best_random_state)
-# print("Best accuracy_score: ", best_accuracy_score)
+decision_tree_classifier()

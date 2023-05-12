@@ -1,11 +1,10 @@
-import numpy as np 
 import matplotlib.pyplot as plt
 import pandas as pd 
 import pickle
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier,MLPRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, confusion_matrix, r2_score, mean_squared_error,ConfusionMatrixDisplay
+from sklearn.metrics import classification_report, confusion_matrix, r2_score, mean_squared_error,ConfusionMatrixDisplay, accuracy_score
 from load_the_data import given_data_classifier, given_data_regressor, targeted_labels, targeted_gravity, plot_confusion_matrix
 
 def plot_data(y_test, predict_test):
@@ -19,19 +18,10 @@ def plot_data(y_test, predict_test):
 
 
 def neural_network_classifier():
-	target_column = ['label'] 
-
-	# predictors = list(set(list(given_data_classifier.columns))-set(target_column))
-	# max_value_predictors= given_data_classifier[predictors].max()
-
-	# given_data_classifier[predictors] = given_data_classifier[predictors]/max_value_predictors ## Normalização dos dados
-	# given_data_classifier.describe().transpose()
 
 	X_train, X_test, y_train, y_test = train_test_split(given_data_classifier, targeted_labels, test_size=0.4, random_state=1)
-	print(X_train.shape)
-	print(X_test.shape)
 
-	mlp = MLPClassifier(hidden_layer_sizes=(120, 50, 20), activation='relu', learning_rate="adaptive", max_iter=1000)
+	mlp = MLPClassifier(hidden_layer_sizes=(147, 93, 87), activation='relu', learning_rate="adaptive", max_iter=1000)
 	mlp.fit(X_train, y_train)
 
 	filename = "classifier-NN.pickle"
@@ -40,7 +30,6 @@ def neural_network_classifier():
 	predict_test = mlp.predict(X_test)
 
 	plot_data(y_test, predict_test)
-	plot_confusion_matrix(mlp, X_test, y_test, "classifier")
 	print(confusion_matrix(y_test, predict_test))
 	print(classification_report(y_test, predict_test))
 	plot_confusion_matrix(mlp, X_test, y_test, "classifier")
@@ -70,7 +59,6 @@ def neural_network_regressor():
 
 	print(r2_score(y_test, predict_test))
 	print(mean_squared_error(y_test, predict_test))
-		
-		
-neural_network_regressor()
-# neural_network_classifier()
+
+neural_network_classifier()
+# neural_network_regressor()
